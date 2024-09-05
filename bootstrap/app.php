@@ -7,13 +7,11 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: array_filter([
-            ...array_map(fn (string $path) => $path . '/Infrastructure/routes/web.php', PathUtils::getModulesPaths()),
-            __DIR__ . '/../app/Shared/Infrastructure/routes/web.php',
-            __DIR__ . '/../routes/web.php',
-        ], fn (string $path) => file_exists($path)),
+        web: PathUtils::getRoutesPaths('web'),
+        api: PathUtils::getRoutesPaths('api'),
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
+        // apiPrefix: 'api',
     )
     ->withMiddleware(function (Middleware $middleware) {
     })

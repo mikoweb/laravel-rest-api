@@ -31,4 +31,16 @@ class PathUtils
 
         return self::$modulesPaths;
     }
+
+    /**
+     * @return string[]
+     */
+    public static function getRoutesPaths(string $type): array
+    {
+        return array_filter([
+            ...array_map(fn (string $path) =>  "$path/Infrastructure/routes/$type.php", self::getModulesPaths()),
+            __DIR__ . "/../../../Shared/Infrastructure/routes/$type.php",
+            __DIR__ . "/../../../../routes/$type.php",
+        ], fn (string $path) => file_exists($path));
+    }
 }
