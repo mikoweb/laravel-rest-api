@@ -7,7 +7,8 @@
     "require": {
         "php": "^8.3",
         "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "wendelladriel/laravel-validated-dto": "^3.8"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
