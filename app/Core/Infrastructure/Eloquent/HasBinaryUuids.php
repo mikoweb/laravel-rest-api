@@ -19,4 +19,18 @@ trait HasBinaryUuids
     {
         return Uuid::fromBytes($this->getAttribute('id'));
     }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        $data = parent::toArray();
+
+        if (is_array($data) && isset($data['id']) && is_string($data['id'])) {
+            $data['id'] = Uuid::fromBytes($data['id'])->toString();
+        }
+
+        return $data;
+    }
 }

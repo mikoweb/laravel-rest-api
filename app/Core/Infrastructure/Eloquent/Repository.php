@@ -9,5 +9,5 @@ interface Repository extends RepositoryInterface
     /**
      * @param string[] $columns
      */
-    public function findByBinaryUuid(string $id, array $columns = ['*']): mixed;
+    public function findByBinaryUuid(string $id, array $columns = ['*']): ?object;
 }
