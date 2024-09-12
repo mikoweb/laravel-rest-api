@@ -11,8 +11,10 @@
         "laravel-doctrine/orm": "^2.1",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "phpdocumentor/reflection-docblock": "^5.4",
         "prettus/l5-repository": "^2.9",
         "ramsey/uuid-doctrine": "^2.1",
+        "wayofdev/laravel-symfony-serializer": "^2.1",
         "wendelladriel/laravel-validated-dto": "^3.8"
     },
     "require-dev": {
