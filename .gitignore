@@ -23,6 +23,7 @@ yarn-error.log
 ###< Laravel ###
 
 ###> APP ###
+/storage/api-docs/api-docs.json
 /app/Console/Commands/Dev.php
 ###< APP ###
 
