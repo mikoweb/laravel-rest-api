@@ -2,13 +2,19 @@
 
 namespace App\Core\Infrastructure\Eloquent;
 
+use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Ramsey\Uuid\Doctrine\UuidBinaryType;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 trait HasBinaryUuids
 {
     use HasUuids;
+
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: UuidBinaryType::NAME, unique: true)]
+    private mixed $id;
 
     public function newUniqueId(): string
     {

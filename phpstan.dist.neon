@@ -11,4 +11,6 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
       - '/Property App\\Module\\[a-zA-Z0-9_]+\\Domain\\Model\\[a-zA-Z0-9_]+::\$[a-zA-Z0-9_]+ is unused\./'
+      - '/Property App\\Module\\[a-zA-Z0-9_]+\\Domain\\Model\\[a-zA-Z0-9_]+::\$[a-zA-Z0-9_]+ is never read, only written\./'
+      - '/return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types/'
       - '/Prettus\\Repository/'

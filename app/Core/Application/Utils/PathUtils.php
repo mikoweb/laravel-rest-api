@@ -4,6 +4,8 @@ namespace App\Core\Application\Utils;
 
 use DirectoryIterator;
 
+use function Symfony\Component\String\u;
+
 class PathUtils
 {
     /**
@@ -42,5 +44,23 @@ class PathUtils
             __DIR__ . "/../../../Shared/Infrastructure/routes/$type.php",
             __DIR__ . "/../../../../routes/$type.php",
         ], fn (string $path) => file_exists($path));
+    }
+
+    public static function getDatasetPath(?string $path = null): string
+    {
+        return resource_path(self::concatPath('dataset', $path));
+    }
+
+    public static function concatPath(string $basePath, ?string $path): string
+    {
+        if (empty($path)) {
+            return $basePath;
+        }
+
+        if (u($path)->startsWith('/')) {
+            $path = u($path)->slice(1)->toString();
+        }
+
+        return "$basePath/$path";
     }
 }
