@@ -8,6 +8,7 @@ parameters:
         - tests/
     excludePaths:
         - bootstrap/cache/
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
       - '/Property App\\Module\\[a-zA-Z0-9_]+\\Domain\\Model\\[a-zA-Z0-9_]+::\$[a-zA-Z0-9_]+ is unused\./'
       - '/Prettus\\Repository/'
