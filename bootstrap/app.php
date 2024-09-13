@@ -21,4 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ...array_map(fn (string $path) => $path . '/Application/Interaction', PathUtils::getModulesPaths()),
         __DIR__ . '/../app/Shared/Application/Interaction',
     ])
+    ->withCommands([
+        ...array_map(fn (string $path) => $path . '/UI/CLI', PathUtils::getModulesPaths()),
+        __DIR__ . '/../app/Shared/UI/CLI',
+    ])
     ->create();
