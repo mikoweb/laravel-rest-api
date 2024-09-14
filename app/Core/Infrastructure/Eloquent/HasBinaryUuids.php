@@ -33,10 +33,20 @@ trait HasBinaryUuids
     {
         $data = parent::toArray();
 
-        if (is_array($data) && isset($data['id']) && is_string($data['id'])) {
-            $data['id'] = Uuid::fromBytes($data['id'])->toString();
+        foreach ($this->getBinaryUuidColumns() as $column) {
+            if (isset($data[$column]) && is_string($data[$column])) {
+                $data[$column] = Uuid::fromBytes($data[$column])->toString();
+            }
         }
 
         return $data;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getBinaryUuidColumns(): array
+    {
+        return [$this->getKeyName()];
     }
 }

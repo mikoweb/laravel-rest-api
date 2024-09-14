@@ -7,10 +7,14 @@ use App\Core\Infrastructure\Eloquent\Timestampable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use PhpUnitConversion\Unit\Mass\KiloGram;
+use PhpUnitConversion\Unit\Mass\Pound;
+use PhpUnitConversion\Unit\Volume\Liter;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'cars')]
@@ -39,7 +43,7 @@ class Car extends Model
     #[ORM\Column(name: 'drive_train', type: Types::STRING, length: 20, nullable: false)]
     private string $driveTrain;
 
-    #[ORM\Column(name: 'engine_size', type: Types::FLOAT, nullable: false)]
+    #[ORM\Column(name: 'engine_size', type: Types::DECIMAL, precision: 3, scale: 1, nullable: false)]
     private string $engineSize;
 
     #[ORM\Column(name: 'cylinders', type: Types::SMALLINT, nullable: true)]
@@ -109,6 +113,27 @@ class Car extends Model
     }
 
     /**
+     * @return Builder<static>
+     */
+    public static function withAll(): Builder
+    {
+        return self::with(['manufacturer', 'type', 'region']);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getBinaryUuidColumns(): array
+    {
+        return [
+            $this->getKeyName(),
+            'manufacturer_id',
+            'type_id',
+            'region_id',
+        ];
+    }
+
+    /**
      * @return array<string, array<string, string>>
      */
     public function sluggable(): array
@@ -160,12 +185,12 @@ class Car extends Model
         return $this;
     }
 
-    public function getEngineSize(): string
+    public function getEngineSize(): Liter
     {
-        return $this->getAttribute('engine_size');
+        return new Liter((float) $this->getAttribute('engine_size'));
     }
 
-    public function setEngineSize(string $engineSize): self
+    public function setEngineSize(float $engineSize): self
     {
         $this->setAttribute('engine_size', $engineSize);
 
@@ -196,9 +221,12 @@ class Car extends Model
         return $this;
     }
 
-    public function getWeight(): int
+    public function getWeight(): KiloGram
     {
-        return $this->getAttribute('weight');
+        /** @var KiloGram $value */
+        $value = (new Pound((int) $this->getAttribute('weight')))->to(KiloGram::class);
+
+        return $value;
     }
 
     public function setWeight(int $weight): self
@@ -210,16 +238,31 @@ class Car extends Model
 
     public function manufacturer(): BelongsTo
     {
-        return $this->belongsTo(CarManufacturer::class, 'manufacturer_id');
+        return $this->belongsTo(CarManufacturer::class);
+    }
+
+    public function getManufacturer(): CarManufacturer
+    {
+        return $this->getAttribute('manufacturer');
     }
 
     public function type(): BelongsTo
     {
-        return $this->belongsTo(CarType::class, 'type_id');
+        return $this->belongsTo(CarType::class);
+    }
+
+    public function getType(): CarType
+    {
+        return $this->getAttribute('type');
     }
 
     public function region(): BelongsTo
     {
-        return $this->belongsTo(CarRegion::class, 'region_id');
+        return $this->belongsTo(CarRegion::class);
+    }
+
+    public function getRegion(): CarRegion
+    {
+        return $this->getAttribute('region');
     }
 }

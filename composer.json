@@ -14,6 +14,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "league/csv": "^9.16",
+        "php-unit-conversion/php-unit-conversion": "^1.30",
         "phpdocumentor/reflection-docblock": "^5.4",
         "prettus/l5-repository": "^2.9",
         "ramsey/collection": "^2.0",

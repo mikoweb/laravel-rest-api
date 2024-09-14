@@ -13,8 +13,8 @@ abstract class BaseRepository extends PrettusRepository implements Repository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function findByBinaryUuid(string $id, array $columns = ['*']): ?object
+    public function findByBinaryUuid(string $id, array $relations = [], array $columns = ['*']): ?object
     {
-        return $this->findByField('id', Uuid::fromString($id)->getBytes(), $columns)->first();
+        return $this->with($relations)->findByField('id', Uuid::fromString($id)->getBytes(), $columns)->first();
     }
 }

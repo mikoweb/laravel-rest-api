@@ -16,10 +16,13 @@ abstract class Controller
         return new NotFoundHttpException($message, $previous);
     }
 
-    protected function findModelByBinaryUuid(string $id, Repository $repository): object
+    /**
+     * @param string[] $relations
+     */
+    protected function findModelByBinaryUuid(string $id, Repository $repository, array $relations = []): object
     {
         try {
-            $model = $repository->findByBinaryUuid($id);
+            $model = $repository->findByBinaryUuid($id, $relations);
         } catch (InvalidUuidStringException) {
             throw $this->createNotFoundException(sprintf('UUID `%s` is invalid', $id));
         }
