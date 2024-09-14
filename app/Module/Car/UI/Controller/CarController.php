@@ -8,6 +8,7 @@ use App\Core\UI\Controller\RestController;
 use App\Module\Car\Application\Interaction\Query\AskForCarsPaginatedList\AskForCarsPaginatedListQuery;
 use App\Module\Car\Domain\Model\Car;
 use App\Module\Car\Infrastructure\Repository\CarRepository;
+use App\Module\Car\UI\Dto\CarFilterQueryDto;
 use App\Shared\UI\Dto\Car\CarDto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -17,6 +18,17 @@ class CarController extends RestController
 {
     #[OA\Parameter(name: 'page', in: 'query')]
     #[OA\Parameter(name: 'limit', in: 'query')]
+    #[OA\Parameter(name: 'nameLike', in: 'query')]
+    #[OA\Parameter(name: 'manufacturers[]', in: 'query')]
+    #[OA\Parameter(name: 'types[]', in: 'query')]
+    #[OA\Parameter(name: 'regions[]', in: 'query')]
+    #[OA\Parameter(name: 'driveTrains[]', in: 'query')]
+    #[OA\Parameter(name: 'horsepowerFrom', in: 'query')]
+    #[OA\Parameter(name: 'horsepowerTo', in: 'query')]
+    #[OA\Parameter(name: 'engineSizeFrom', in: 'query')]
+    #[OA\Parameter(name: 'engineSizeTo', in: 'query')]
+    #[OA\Parameter(name: 'cylindersFrom', in: 'query')]
+    #[OA\Parameter(name: 'cylindersTo', in: 'query')]
     #[OA\Get(path: '/api/car', tags: ['Car'])]
     #[OA\Response(
         response: 200,
@@ -37,9 +49,11 @@ class CarController extends RestController
     public function index(
         Request $request,
         QueryBusInterface $queryBus,
+        CarFilterQueryDto $carFilterQuery,
     ): Response {
         $pagination = $queryBus->dispatch(new AskForCarsPaginatedListQuery(
             PaginationRequest::createFromRequest($request),
+            $carFilterQuery,
         ));
 
         $this->response->withContext(['groups' => ['list', 'pagination']]);

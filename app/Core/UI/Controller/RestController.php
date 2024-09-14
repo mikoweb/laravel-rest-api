@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 use WayOfDev\Serializer\Bridge\Laravel\Http\ResponseFactory;
 
 #[OA\Info(version: '0.0.1', title: 'Laravel REST API')]
-#[OA\Server(url: '/api')]
+#[OA\Server(url: '/')]
 abstract class RestController extends Controller
 {
     use CreateSuccessViewTrait;
