@@ -16,6 +16,7 @@ use WendellAdriel\ValidatedDTO\Casting\Castable;
 use WendellAdriel\ValidatedDTO\Casting\DTOCast;
 use WendellAdriel\ValidatedDTO\Concerns\EmptyDefaults;
 use WendellAdriel\ValidatedDTO\SimpleDTO;
+use UnexpectedValueException;
 
 #[OA\Schema(
     schema: 'Shared_Car_CarDto',
@@ -107,11 +108,23 @@ class CarDto extends SimpleDTO
             'manufacturer' => new DTOCast(ManufacturerDto::class),
             'type' => new DTOCast(TypeDto::class),
             'region' => new DTOCast(RegionDto::class),
-            'engineSize' => function (string $property, string $value) {
-                return UnitValue::createFromUnit(new Liter((float) $value), 1);
+            'engineSize' => function (string $property, mixed $value) {
+                return match (gettype($value)) {
+                    'string' => UnitValue::createFromUnit(new Liter((float) $value), 1),
+                    'array' => new UnitValue(...$value),
+                    default => new UnexpectedValueException(
+                        sprintf('Unexpected engineSize type `%s`', gettype($value)),
+                    ),
+                };
             },
-            'weight' => function (string $property, int $value) {
-                return UnitValue::createFromUnit((new Pound($value))->to(KiloGram::class), 0);
+            'weight' => function (string $property, mixed $value) {
+                return match (gettype($value)) {
+                    'integer' => UnitValue::createFromUnit((new Pound($value))->to(KiloGram::class), 0),
+                    'array' => new UnitValue(...$value),
+                    default => new UnexpectedValueException(
+                        sprintf('Unexpected weight type `%s`', gettype($value)),
+                    ),
+                };
             },
         ];
     }
